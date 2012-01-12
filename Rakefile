@@ -20,7 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Scientific names finder}
   gem.description = %Q{The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)}
   gem.email = "dmozzherin@gmail.com"
-  gem.authors = ["Ryan Schenk", "Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
+  gem.authors = ["Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
