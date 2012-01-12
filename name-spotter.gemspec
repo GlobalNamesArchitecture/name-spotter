@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = %q{name-spotter}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = [%q{Dmitry Mozzherin}]
+  s.authors = [%q{Ryan Schenk}, %q{Anthony Goddard}, %q{Chuck Ha}, %q{Dmitry Mozzherin}]
   s.date = %q{2012-01-12}
-  s.description = %q{TODO: longer description of your gem}
+  s.description = %q{The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)}
   s.email = %q{dmozzherin@gmail.com}
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -35,15 +35,16 @@ Gem::Specification.new do |s|
     "lib/name-spotter/neti_neti_client.rb",
     "lib/name-spotter/scientific_name.rb",
     "lib/name-spotter/taxon_finder_client.rb",
+    "name-spotter.gemspec",
     "spec/name-spotter_spec.rb",
     "spec/scientific_name_spec.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/dimus/name-spotter}
+  s.homepage = %q{http://github.com/GlobalNamesArchitecture/name-spotter}
   s.licenses = [%q{MIT}]
   s.require_paths = [%q{lib}]
   s.rubygems_version = %q{1.8.6}
-  s.summary = %q{TODO: one-line summary of your gem}
+  s.summary = %q{Scientific names finder}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
