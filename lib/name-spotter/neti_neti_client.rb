@@ -5,8 +5,8 @@ class NameSpotter
     end
 
     def find(text)
-      # the form does not get sent if input is nil or empty
-      return [] if text.nil? || input.empty?
+      # the form does not get sent if text is nil or empty
+      return [] if text.nil? || text.empty?
       response = RestClient.post("http://#{@host}:#{@port}", data: text)
 
       response.body.split("|").collect do |info|

@@ -73,6 +73,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  builder
   bundler (~> 1.0.0)
   capybara
   cucumber

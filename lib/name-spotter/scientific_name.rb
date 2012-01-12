@@ -2,6 +2,10 @@ class NameSpotter
   class ScientificName
     attr_reader :verbatim, :scientific, :start_pos, :end_pos, :score
 
+    def self.normalize(name)
+      name.gsub(/\s+/, ' ')
+    end
+
     def initialize(verbatim_name, options={})
       @verbatim = verbatim_name
       if options[:start_position]
@@ -20,6 +24,14 @@ class NameSpotter
         other_name.start_pos.eql?(start_pos) && 
         other_name.end_pos.eql?(end_pos) && 
         other_name.score.eql?(score)
+    end
+
+    def to_hash
+      name_hash = {:verbatim => verbatim}
+      name_hash[:scientificName] = scientific if scientific
+      name_hash[:offsetStart] = start_pos if start_pos
+      name_hash[:offsetEnd] = end_pos if end_pos
+      name_hash
     end
   end
 end

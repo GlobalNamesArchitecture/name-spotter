@@ -2,11 +2,14 @@ class NameSpotter
   class TaxonFinderClient < NameSpotter::Client
     def initialize(opts = { host: "0.0.0.0", port: "1234" })
       super
-      @socket ||= TCPSocket.open @host, @port
       # We keep track of the document to get accurate offsets.
       # Other methods such as keeping track of the character number
       #  didn't work so well due to the nature of TaxonFinder.
       @document = ""
+    end
+
+    def socket
+      @socket ||= TCPSocket.open @host, @port
     end
 
     def find(str, from_web_form=false)
@@ -27,15 +30,16 @@ class NameSpotter
           taxon_find(word)
         end
       end
-      @socket.close
+      socket.close
+      @socket = nil
       @document = ""
       @names
     end
 
     def taxon_find(word)
       input = "#{word}|#{@current_string}|#{@current_string_state}|#{@word_list_matches}|0"
-        @socket.write(input + "\n")
-      if output = @socket.gets
+        socket.write(input + "\n")
+      if output = socket.gets
         response = parse_socket_response(output)
         return if not response
 

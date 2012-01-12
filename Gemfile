@@ -5,6 +5,7 @@ source "http://rubygems.org"
 
 gem "rake"
 gem "rest-client"
+gem "builder"
 gem "json"
 
 # Add dependencies to develop your gem here.
