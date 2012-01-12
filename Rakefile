@@ -15,12 +15,12 @@ require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "name-spotter"
-  gem.homepage = "http://github.com/dimus/name-spotter"
+  gem.homepage = "http://github.com/GlobalNamesArchitecture/name-spotter"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Scientific names finder}
+  gem.description = %Q{The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)}
   gem.email = "dmozzherin@gmail.com"
-  gem.authors = ["Dmitry Mozzherin"]
+  gem.authors = ["Ryan Schenk", "Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
