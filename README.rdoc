@@ -1,6 +1,6 @@
 = name-spotter
 
-Finds biodiversity scientific names in texts using TaxonFinder or NetiNeti libraries. 
+Finds biodiversity scientific names in texts using TaxonFinder or NetiNeti libraries. This gem works with ruby >= 1.9.2
 
 == Installation
 
