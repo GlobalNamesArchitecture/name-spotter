@@ -28,11 +28,21 @@ If you are using localhost and default ports:
 If you have installed NetiNeti and TaxonFinder on a machine with non-default port:
 
     neti_client = NameSpotter::NetiNetiClient.new(host: "example.com", port: 5555)
+    #or
+    neti_client = NameSpotter::NetiNetiClient.new(host: "123.123.123.111", port: 5555)
 
 If you want to get results in JSON or XML formats
     
     neti_name_spotter.find(your_text, "json")
     neti_name_spotter.find(your_text, "xml")
+
+== Development
+
+To run tests start TaxonFinder and NetiNeti on your local machine with default configurations and run
+
+    rake
+
+
 
 == Contributing to name-spotter
  
