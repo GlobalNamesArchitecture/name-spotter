@@ -58,6 +58,6 @@ To run tests start TaxonFinder and NetiNeti on your local machine with default c
 
 Authors: Chuck Ha, Anthony Goddard,  Dmitry Mozzherin
 
-Copyright (c) 2012 Marine Biologica Laboratory. See LICENSE.txt for
+Copyright (c) 2012 Marine Biological Laboratory. See LICENSE.txt for
 further details.
 
