@@ -1,10 +1,38 @@
 = name-spotter
 
-Finds biodiversity scientific names in texts using TaxonFinder or NetiNeti libraries. This gem works with ruby >= 1.9.2
+Finds biodiversity scientific names in texts using TaxonFinder (by Patrick Leary) or NetiNeti (by Lakshmi Manohar Akella) libraries. This gem works with ruby >= 1.9.2
 
 == Installation
 
+* Install the gem
+
     gem install name-spotter
+
+* Install and run TaxonFinder in a new terminal window
+
+    wget http://taxon-finder.googlecode.com/files/taxon-finder.tar.gz
+    tar zxvf taxon-finder.tar.gz
+    cd taxon-finder
+    perl server.pl 
+
+* Install and run NetiNeti in a new terminal window
+
+    wget https://github.com/mbl-cli/NetiNeti/zipball/master
+    unzip master
+    cd cd mbl-cli-NetiNeti-*
+
+    #or
+
+    git clone git://github.com/mbl-cli/NetiNeti.git
+    cd NetiNeti
+
+    #then
+    
+    easy_install virtualenv
+    easy_install tornado
+    python neti_env.py virtualenvs/neti
+    cp config/neti_http_config.cfg.example config/neti_http_config.cfg
+    python neti_tornado_server.py 
 
 == Usage
 
