@@ -1,3 +1,4 @@
+# encoding: utf-8
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "NameSpotter" do
@@ -43,6 +44,16 @@ describe "NameSpotter" do
     res.should == ["Betula alba", "Mus musculus", "B. alba", "Varanus bitatawa"]
     res = @tf.find(text)[:names].map { |n| n[:scientificName] } 
     res.should == ["Betula alba", "Mus musculus", "B[etula] alba", "Varanus"]
+  end
+
+  it "should get back correct names using offsets in utf-8 based text" do
+    text = "A text with multibyte characters नेति नेति:  Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"
+    res = @neti.find(text)[:names]
+    res.map do |name|
+      verbatim = name[:verbatim]
+      found_name = text[name[:offsetStart]..name[:offsetEnd]]
+      found_name.should == verbatim
+    end
   end
 
 end

@@ -10,7 +10,7 @@ describe NameSpotter::ScientificName do
     end
     
     it "should have figured out the end position" do
-      @name.end_pos.should eq @name.start_pos + @find_me.length
+      @name.end_pos.should eq @name.start_pos + @find_me.length - 1
     end
   end
   
@@ -19,7 +19,7 @@ describe NameSpotter::ScientificName do
       verbatim = "Slovenščina"
       name = NameSpotter::ScientificName.new(verbatim, {:start_position => 48193})
       name.verbatim.should eq verbatim
-      name.end_pos.should eq name.start_pos + verbatim.length
+      name.end_pos.should eq name.start_pos + verbatim.length - 1
     end
   end
 end

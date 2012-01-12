@@ -10,7 +10,7 @@ class NameSpotter
       @verbatim = verbatim_name
       if options[:start_position]
         @start_pos = options[:start_position]
-        @end_pos = @start_pos + @verbatim.length
+        @end_pos = @start_pos + @verbatim.length - 1
       end
       @score = options[:score] if options[:score]
       @scientific = options[:scientific_name] if options[:scientific_name]
