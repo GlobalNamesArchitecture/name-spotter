@@ -1,6 +1,6 @@
 = name-spotter
 
-Description goes here.
+Finds biodiversity scientific names in texts using TaxonFinder or NetiNeti libraries. 
 
 == Contributing to name-spotter
  
@@ -14,6 +14,6 @@ Description goes here.
 
 == Copyright
 
-Copyright (c) 2012 Dmitry Mozzherin. See LICENSE.txt for
+Copyright (c) 2012 Marine Biologica Laboratory. See LICENSE.txt for
 further details.
 
