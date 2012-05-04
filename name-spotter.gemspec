@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "name-spotter"
-  s.version = "0.0.5"
+  s.version = "0.0.6"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
-  s.date = "2012-01-12"
+  s.date = "2012-05-04"
   s.description = "The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)"
   s.email = "dmozzherin@gmail.com"
   s.extra_rdoc_files = [
