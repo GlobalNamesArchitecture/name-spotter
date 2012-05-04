@@ -39,12 +39,14 @@ describe "NameSpotter" do
   end
 
   it "should be able to find scientific names in text" do
-    text = "Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"
+    text = "Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus and unicoded name Aranea röselii. Also it has name unknown before: Varanus bitatawa species"
     res = @neti.find(text)[:names].map { |n| n[:scientificName] } 
-    res.should == ["Betula alba", "Mus musculus", "B. alba", "Varanus bitatawa"]
+    res.should == ["Betula alba", "Mus musculus", "B. alba", "Aranea röselii", "Varanus bitatawa"]
     res = @tf.find(text)[:names].map { |n| n[:scientificName] } 
-    res.should == ["Betula alba", "Mus musculus", "B[etula] alba", "Varanus"]
+
+    res.should == ["Betula alba", "Mus musculus", "B[etula] alba", "Aranea röselii", "Varanus"]
   end
+
   
   it "should not remember previous search results" do
     text = "Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"

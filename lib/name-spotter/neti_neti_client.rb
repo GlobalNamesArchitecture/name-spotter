@@ -11,6 +11,7 @@ class NameSpotter
 
       response.body.split("|").collect do |info|
         name, offset_start = info.split(',')
+        name.force_encoding('utf-8')
         normalized_name = NameSpotter::ScientificName.normalize(name)
         NameSpotter::ScientificName.new(name, :scientific_name => normalized_name, :start_position => offset_start.to_i)
       end

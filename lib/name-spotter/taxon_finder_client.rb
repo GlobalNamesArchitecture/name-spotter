@@ -45,11 +45,13 @@ class NameSpotter
         return if not response
 
         unless response.return_string.blank?
+          response.return_string.force_encoding('utf-8')
           verbatim_string = response.return_string.sub(/\[.*\]/, '.')
           scientific_string = response.return_string
           add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => @document.rindex(verbatim_string), :scientific_name => scientific_string)
         end
         unless response.return_string_2.blank?
+          response.return_string_2.force_encoding('utf-8')
           verbatim_string = response.return_string_2.sub(/\[.*\]/, '.')
           scientific_string = response.return_string_2
           add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => @document.rindex(verbatim_string), :scientific_name => scientific_string)
