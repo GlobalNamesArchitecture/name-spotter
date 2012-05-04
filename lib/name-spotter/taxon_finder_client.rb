@@ -13,6 +13,7 @@ class NameSpotter
     end
 
     def find(str, from_web_form=false)
+      @names = []
       return [] if str.nil? || str.empty?
 
       # These are for the data-send-back that happens in TaxonFinder
