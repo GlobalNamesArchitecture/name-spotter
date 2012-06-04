@@ -8,19 +8,16 @@ class NameSpotter
       @document = ""
     end
 
-    def socket
-      @socket ||= TCPSocket.open @host, @port
-    end
-
     def find(str, from_web_form=false)
       @names = []
+      @document_verbatim = str
       return [] if str.nil? || str.empty?
 
       # These are for the data-send-back that happens in TaxonFinder
       @current_string = ''
       @current_string_state = ''
       @word_list_matches = 0
-
+      @empty_count = 0
       words = str.split(/\s/)
       words.each do |word|
         # Since we split on whitespace, this addition of a " " char
@@ -36,6 +33,12 @@ class NameSpotter
       @document = ""
       @names
     end
+    
+    private
+
+    def socket
+      @socket ||= TCPSocket.open @host, @port
+    end
 
     def taxon_find(word)
       input = "#{word}|#{@current_string}|#{@current_string_state}|#{@word_list_matches}|0"
@@ -45,16 +48,12 @@ class NameSpotter
         return if not response
 
         unless response.return_string.blank?
-          response.return_string.force_encoding('utf-8')
-          verbatim_string = response.return_string.sub(/\[.*\]/, '.')
-          scientific_string = response.return_string
-          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => @document.rindex(verbatim_string), :scientific_name => scientific_string)
+          verbatim_string, scientific_string, start_position = process_response(response.return_string)
+          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
         end
         unless response.return_string_2.blank?
-          response.return_string_2.force_encoding('utf-8')
-          verbatim_string = response.return_string_2.sub(/\[.*\]/, '.')
-          scientific_string = response.return_string_2
-          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => @document.rindex(verbatim_string), :scientific_name => scientific_string)
+          verbatim_string, scientific_string, start_position = process_response(response.return_string_2)
+          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
         end
       end
     end
@@ -77,5 +76,16 @@ class NameSpotter
         false
       end
     end
+
+    def process_response(str)
+      str.force_encoding('utf-8')
+      verbatim_string = str.sub(/\[.*\]/, '.')
+      verbatim_regex = Regexp.new(verbatim_string.split(/\s/).join('\s+'), true)
+      start_position = @document.rindex(verbatim_regex)
+      verbatim_string = @document_verbatim[start_position..-1].match(verbatim_regex)[0] if start_position
+      scientific_string = str
+      [verbatim_string, scientific_string, start_position]
+    end
+
   end
 end

@@ -12,6 +12,7 @@ gem "json"
 # Include everything needed to run rake, tests, features, etc.
 group :development do
   gem "rspec", "~> 2.3.0"
+  gem "rspec-expectations"
   gem "cucumber", ">= 0"
   gem "capybara"
   gem "bundler", "~> 1.0.0"
