@@ -3,7 +3,8 @@ class NameSpotter
     attr_reader :verbatim, :scientific, :start_pos, :end_pos, :score
 
     def self.normalize(name)
-      name.gsub(/\s+/, ' ')
+      name = name.gsub(",", " ") 
+      name.gsub(/\s+/, " ")
     end
 
     def initialize(verbatim_name, options={})

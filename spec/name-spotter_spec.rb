@@ -79,4 +79,12 @@ describe "NameSpotter" do
     tf_res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>63, :offsetEnd=>76}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>94, :offsetEnd=>99}, {:verbatim=>"Pardosa\n moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>113, :offsetEnd=>137}]}
   end
 
+  it "should not make unsequential offsets on a page when using NetiNeti" do
+    text = open(File.join(File.dirname(__FILE__), 'files', 'journalofentomol13pomo_0063.txt'), 'r:utf-8').read
+    res = @neti.find(text)
+    offsets = res[:names].map {|n| n[:offsetStart]}
+    offsets.sort.should == offsets
+    offsets[0].should == 67
+  end
+
 end
