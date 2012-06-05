@@ -7,6 +7,7 @@ gem "rake"
 gem "rest-client"
 gem "builder"
 gem "json"
+gem "unicode_utils"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

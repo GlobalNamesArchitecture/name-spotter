@@ -4,6 +4,7 @@ require "uri"
 require "json"
 require "nokogiri"
 require "socket"
+require "unicode_utils"
 require File.join(File.dirname(__FILE__), 'name-spotter', 'client')
 
 Dir["#{File.dirname(__FILE__)}/name-spotter/**/*.rb"].each {|f| require f}

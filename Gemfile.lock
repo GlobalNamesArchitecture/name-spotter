@@ -66,6 +66,7 @@ GEM
       multi_json (~> 1.0.4)
       rubyzip
     term-ansicolor (1.0.7)
+    unicode_utils (1.3.0)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -85,3 +86,4 @@ DEPENDENCIES
   rspec (~> 2.3.0)
   rspec-expectations
   ruby-debug19
+  unicode_utils

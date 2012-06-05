@@ -87,4 +87,10 @@ describe "NameSpotter" do
     offsets[0].should == 67
   end
 
+  it "should normalize capitalization of found names" do
+    text = "We need to make sure that Ophioihrix nidis and OPHTOMVXIDAE and also  Ophiocynodus and especially ASTÉROCHEMIDAE and definitely STFROPHVTIDAE and may be Asleronyx excavata should all be capitalized correctly"
+    res = @neti.find(text)
+    res.should == {:names=>[{:verbatim=>"Ophioihrix nidis", :scientificName=>"Ophioihrix nidis", :offsetStart=>26, :offsetEnd=>41}, {:verbatim=>"OPHTOMVXIDAE", :scientificName=>"Ophtomvxidae", :offsetStart=>47, :offsetEnd=>58}, {:verbatim=>"Ophiocynodus", :scientificName=>"Ophiocynodus", :offsetStart=>70, :offsetEnd=>81}, {:verbatim=>"ASTÉROCHEMIDAE", :scientificName=>"Astérochemidae", :offsetStart=>98, :offsetEnd=>111}, {:verbatim=>"STFROPHVTIDAE", :scientificName=>"Stfrophvtidae", :offsetStart=>128, :offsetEnd=>140}, {:verbatim=>"Asleronyx excavata", :scientificName=>"Asleronyx excavata", :offsetStart=>153, :offsetEnd=>170}]}
+  end
+
 end

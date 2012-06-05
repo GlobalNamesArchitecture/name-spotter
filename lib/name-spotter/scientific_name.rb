@@ -4,7 +4,9 @@ class NameSpotter
 
     def self.normalize(name)
       name = name.gsub(",", " ") 
-      name.gsub(/\s+/, " ")
+      name = name.gsub(/\s+/, " ")
+      name = UnicodeUtils.downcase(name)
+      UnicodeUtils.upcase(name[0]) + name[1..-1]
     end
 
     def initialize(verbatim_name, options={})
