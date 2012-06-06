@@ -92,5 +92,12 @@ describe "NameSpotter" do
     res = @neti.find(text)
     res.should == {:names=>[{:verbatim=>"Ophioihrix nidis", :scientificName=>"Ophioihrix nidis", :offsetStart=>26, :offsetEnd=>41}, {:verbatim=>"OPHTOMVXIDAE", :scientificName=>"Ophtomvxidae", :offsetStart=>47, :offsetEnd=>58}, {:verbatim=>"Ophiocynodus", :scientificName=>"Ophiocynodus", :offsetStart=>70, :offsetEnd=>81}, {:verbatim=>"ASTÉROCHEMIDAE", :scientificName=>"Astérochemidae", :offsetStart=>98, :offsetEnd=>111}, {:verbatim=>"STFROPHVTIDAE", :scientificName=>"Stfrophvtidae", :offsetStart=>128, :offsetEnd=>140}, {:verbatim=>"Asleronyx excavata", :scientificName=>"Asleronyx excavata", :offsetStart=>153, :offsetEnd=>170}]}
   end
+  
+  it "should not break NetiNeti results from processing OCR with | character in it" do
+    text = "We need to make sure that Oph|oihrix nidis and OPHTOMVX|DAE will not break results"
+    text = "We need to make sure that Oph|oihrix nidis and OPHTOMVX|DAE will not break results"
+    res = @neti.find(text)
+    res.should == {:names=>[{:verbatim=>"Ophloihrix nidis", :scientificName=>"Ophloihrix nidis", :offsetStart=>26, :offsetEnd=>41}]}
+  end
 
 end
