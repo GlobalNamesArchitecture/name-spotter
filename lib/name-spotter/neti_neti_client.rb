@@ -7,7 +7,7 @@ class NameSpotter
     def find(text)
       # the form does not get sent if text is nil or empty
       return [] if text.nil? || text.empty?
-      response = RestClient.post("http://#{@host}:#{@port}", data: text)
+      response = RestClient.post("http://#{@host}:#{@port}", data: text, headers: {Connection: "Keep-Alive"})
       response.body.split("|").collect do |info|
         res = info.split(",")
         name = res[0...-2].join(",")
