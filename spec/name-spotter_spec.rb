@@ -39,7 +39,7 @@ describe "NameSpotter" do
   end
 
   it "should be able to find scientific names in text" do
-    text = "Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus and unicoded name Aranea röselii. Also it has name unknown before: Varanus bitatawa species"
+    text = "Some text   that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus and unicoded name Aranea röselii. Also it has name unknown before: Varanus bitatawa species"
     res = @neti.find(text)[:names].map { |n| n[:scientificName] } 
     res.should == ["Betula alba", "Mus musculus", "B. alba", "Aranea röselii", "Varanus bitatawa"]
     tf_res = @tf.find(text)
@@ -72,11 +72,11 @@ describe "NameSpotter" do
   end
 
   it "should be able to return offsets for all names found by taxonfinder" do
-    text = "We have to be sure that Betula\n alba and PSEUDOSCORPIONIDA and Aranea röselii and capitalized ARANEA RÖSELII and Pardosa\n moesta f. moesta Banks, 1892 all get their offsets"
+    text = "We have to be sure that Betula\n alba and PSEUDOSCORPIONIDA and ×Inkea which is not Passeriformes. We also have another hybrid Passiflora ×rosea and Aranea röselii and capitalized ARANEA RÖSELII and Pardosa\n moesta f. moesta Banks, 1892 all get their offsets"
     res = @neti.find(text)
-    res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>63, :offsetEnd=>76}, {:verbatim=>"Pardosa\n moesta", :scientificName=>"Pardosa moesta", :offsetStart=>113, :offsetEnd=>127}]}
+    res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora ×rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"Pardosa\n moesta", :scientificName=>"Pardosa moesta", :offsetStart=>198, :offsetEnd=>212}]}
     tf_res = @tf.find(text)
-    tf_res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>63, :offsetEnd=>76}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>94, :offsetEnd=>99}, {:verbatim=>"Pardosa\n moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>113, :offsetEnd=>137}]}
+    tf_res.should == {:names=>[{:verbatim=>"Betula  alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Passeriformes.", :scientificName=>"Passeriformes", :offsetStart=>83, :offsetEnd=>96}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>179, :offsetEnd=>184}, {:verbatim=>"Pardosa  moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>198, :offsetEnd=>222}]} 
   end
 
   it "should not make unsequential offsets on a page when using NetiNeti" do
