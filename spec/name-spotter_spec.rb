@@ -100,4 +100,10 @@ describe "NameSpotter" do
     res.should == {:names=>[{:verbatim=>"Ophloihrix nidis", :scientificName=>"Ophloihrix nidis", :offsetStart=>26, :offsetEnd=>41}]}
   end
 
+  it "should not parse ridiculously long infraspecies names by taxon finder" do
+    text = "If we encounter Plantago major it is ok, but if it is Plantago quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus, something is probably not right. However we take Plantago quercus quercus quercus quercus quercus by some strange reason. Well, the reason is this kind of thing -- Pardosa moesta var. moesta f. moesta or something like that"
+    res = @tf.find(text)
+    res.should == {:names=>[{:verbatim=>"Plantago major", :scientificName=>"Plantago major", :offsetStart=>16, :offsetEnd=>29}, {:verbatim=>"Plantago quercus quercus quercus quercus quercus", :scientificName=>"Plantago quercus quercus quercus quercus quercus", :offsetStart=>225, :offsetEnd=>272}, {:verbatim=>"Pardosa moesta var. moesta f. moesta", :scientificName=>"Pardosa moesta var. moesta f. moesta", :offsetStart=>340, :offsetEnd=>375}]}
+  end
+
 end

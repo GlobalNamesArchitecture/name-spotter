@@ -14,7 +14,7 @@ class NameSpotter
       @current_string = ''
       @current_string_state = ''
       @word_list_matches = 0
-      @cursor = 5.times.inject([]) { |res| res << ['',-1] }
+      @cursor = 8.times.inject([]) { |res| res << ['',-1] }
       @current_index = nil
       words = str.split(/\s/)
       words.each do |word|
@@ -44,15 +44,13 @@ class NameSpotter
       if output = socket.gets
         response = parse_socket_response(output)
         return if not response
-
-        unless response.return_string.blank?
-          verbatim_string, scientific_string, start_position = process_response(response.return_string)
+        
+        [response.return_string, response.return_string_2].each do |str|
+          next if !str || str.split(" ").size > 6
+          verbatim_string, scientific_string, start_position = process_response(str)
           add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
         end
-        unless response.return_string_2.blank?
-          verbatim_string, scientific_string, start_position = process_response(response.return_string_2)
-          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
-        end
+        @current_index = nil
       end
     end
 
@@ -85,8 +83,7 @@ class NameSpotter
       if @current_index
         start_position = @current_index
         words, indices = @cursor.transpose
-        verbatim_string = words[indices.index(start_position)...-1].join(" ")
-        @current_index = nil
+        verbatim_string = words[indices.index(start_position)...-1].join(" ") rescue (require 'ruby-debug'; debugger)
       else
         verbatim_string, start_position = @cursor[-1]
       end
