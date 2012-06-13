@@ -71,12 +71,18 @@ describe "NameSpotter" do
     end
   end
 
-  it "should be able to return offsets for all names found by taxonfinder" do
+  it "should be able to return offsets for all names" do
     text = "We have to be sure that Betula\n alba and PSEUDOSCORPIONIDA and ×Inkea which is not Passeriformes. We also have another hybrid Passiflora ×rosea and Aranea röselii and capitalized ARANEA RÖSELII and Pardosa\n moesta f. moesta Banks, 1892 all get their offsets"
     res = @neti.find(text)
     res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora ×rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"Pardosa\n moesta", :scientificName=>"Pardosa moesta", :offsetStart=>198, :offsetEnd=>212}]}
     tf_res = @tf.find(text)
     tf_res.should == {:names=>[{:verbatim=>"Betula  alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Passeriformes.", :scientificName=>"Passeriformes", :offsetStart=>83, :offsetEnd=>96}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>179, :offsetEnd=>184}, {:verbatim=>"Pardosa  moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>198, :offsetEnd=>222}]} 
+  end
+  
+  it "should properly handle abbreviated names found by taxonfinder" do
+    text = "Pardosa moesta Banks, 1892 is one spider, Schizocosa ocreata Keyserling, 1887 is a second and a third is Schizocosa saltatrix borealis. The abbreviations are P. moesta, S. ocreata, and S. saltatrix borealis is the third."
+    tf_res = @tf.find(text)
+    tf_res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>0, :offsetEnd=>13}, {:verbatim=>"Schizocosa ocreata", :scientificName=>"Schizocosa ocreata", :offsetStart=>42, :offsetEnd=>59}, {:verbatim=>"Schizocosa saltatrix borealis.", :scientificName=>"Schizocosa saltatrix borealis", :offsetStart=>105, :offsetEnd=>134}, {:verbatim=>"P. moesta,", :scientificName=>"P[ardosa] moesta", :offsetStart=>158, :offsetEnd=>167}, {:verbatim=>"S. ocreata,", :scientificName=>"S[chizocosa] ocreata", :offsetStart=>169, :offsetEnd=>179}, {:verbatim=>"S. saltatrix borealis is", :scientificName=>"S[chizocosa] saltatrix borealis", :offsetStart=>185, :offsetEnd=>208}]}
   end
 
   it "should not make unsequential offsets on a page when using NetiNeti" do

@@ -83,7 +83,7 @@ class NameSpotter
       if @current_index
         start_position = @current_index
         words, indices = @cursor.transpose
-        verbatim_string = words[indices.index(start_position)...-1].join(" ") rescue (require 'ruby-debug'; debugger)
+        verbatim_string = str.include?("[") ? words[indices.index(start_position)..-1].join(" ") : words[indices.index(start_position)...-1].join(" ")
       else
         verbatim_string, start_position = @cursor[-1]
       end
