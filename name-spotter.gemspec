@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "name-spotter"
-  s.version = "0.1.11"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
-  s.date = "2012-06-13"
+  s.date = "2012-06-18"
   s.description = "The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)"
   s.email = "dmozzherin@gmail.com"
   s.extra_rdoc_files = [
@@ -40,7 +40,8 @@ Gem::Specification.new do |s|
     "spec/files/journalofentomol13pomo_0063.txt",
     "spec/name-spotter_spec.rb",
     "spec/scientific_name_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "tf_logic.txt"
   ]
   s.homepage = "http://github.com/GlobalNamesArchitecture/name-spotter"
   s.licenses = ["MIT"]
