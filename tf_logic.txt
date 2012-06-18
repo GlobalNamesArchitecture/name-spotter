@@ -1,0 +1,72 @@
+if no 5 items input:
+
+  return ||0||-1||
+  word list match - 0
+  score -1
+
+if word is empty:
+
+  return ||0|$currentString|$wordListMatches||
+
+  where currentString is from input stripped
+  and worldListMatches is from input stripped
+  wordlist match 0
+  score - wordListMatch??
+
+**********GENUS**********************
+for Genus + species
+  if genus found and species has punctuation at the end (end of the name because of comma, end of the sentence etc.)
+
+    return ||0|$currentString|$wordListMatches||
+    where $wordListMatches is contactenation of strings, like 0S
+
+  if genus found and species, but not end of the sentence
+    $currentString $cleanCandidateWord|species|$wordListMatches"."$score||-1||
+    search continues... found species, can be subspecies
+  
+  for abbreviated Genera (1-2 letters (where '-' can also be the first letter ???):
+    expand Genus if last used genus is known with this letters
+    if abbrev did not make sense (genus is not found):
+      ||0||-1|| 
+      - result is nothing
+      Also means 2 letter genera are not found by NameFinder
+
+  if next word starts right after genus
+    if next word is potential abbr genus
+      ****$cleanCandidateWord|genus|0|$currentString|$wordListMatches||\n"
+    if next word is subgenus
+      if genus is abbreviated find it and extend
+        "$currentString ($cleanCandidateWord)|genus|$wordListMatches"."$scoreG||-1||\n"
+      if abbr not found start new name from 'subgenus' as genus this time
+        "$cleanCandidateWord|genus|$scoreG||-1||\n"
+      else return genus (subgenus)
+        "$currentString ($cleanCandidateWord)|genus|$wordListMatches"."$scoreG||-1||\n"
+    if next word is genus
+      ****"$cleanCandidateWord|genus|$scoreG|$currentString|$wordListMatches||\n"
+  
+  if next word is family
+    if genus was abbreviated make it ""
+      ****"||0|$currentString|$wordListMatches"; empty string genus -- should be ignored
+    if genus and family -- return both as return_string1 and return_string2 correspondently
+      ****||0|genus|genus_score|family|family_score
+
+***********SPECIES**********
+if subspecies:
+  "$currentString $cleanCandidateWord|species|$wordListMatches"."$score||-1||\n"
+  currently number of infrapsecies is unlimited
+if rank
+  "$currentString $candidateWord|rank|$wordListMatches"."$score||-1||\n";
+  potentially also unlimited
+if potential abbr genus
+  ****"$cleanCandidateWord|genus|0|$currentString|$wordListMatches||\n"
+if genus
+  ****"$cleanCandidateWord|genus|$scoreG|$currentString|$wordListMatches||\n"
+if family
+  ****||0|species|species|family|family_score
+
+
+
+
+
+
+

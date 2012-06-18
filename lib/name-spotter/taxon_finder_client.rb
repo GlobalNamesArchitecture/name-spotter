@@ -45,12 +45,13 @@ class NameSpotter
         response = parse_socket_response(output)
         return if not response
         
-        [response.return_string, response.return_string_2].each do |str|
+        [response.return_string, response.return_string_2].each_with_index do |str, i|
           next if !str || str.split(" ").size > 6
-          verbatim_string, scientific_string, start_position = process_response(str)
+          verbatim_string, scientific_string, start_position = process_response(str, i)
+          next if scientific_string.empty?
           add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
         end
-        @current_index = nil
+        @current_index = @current_string.empty? ? nil : @cursor[-1][-1]
       end
     end
 
@@ -60,10 +61,10 @@ class NameSpotter
       @current_string_state = current_string_state
       @word_list_matches = word_list_matches
       @return_score = return_score
-      if @current_string.size > 0 && !@current_index
-        @current_index = @cursor[-1][-1]
+      if !@current_index && @current_string.size > 0
+          @current_index = @cursor[-1][-1]
       end
-      if not return_string.blank? or not return_string_2.blank?
+      if not return_string.blank? or not return_string_2.blank? 
         OpenStruct.new( { :current_string       => current_string,
                        :current_string_state => current_string_state,
                        :word_list_matches    => word_list_matches,
@@ -77,13 +78,14 @@ class NameSpotter
       end
     end
 
-    def process_response(str)
+    def process_response(str, index)
+      is_return_string2 = (index == 1)
       str.force_encoding('utf-8')
       start_position = verbatim_string = nil
       if @current_index
-        start_position = @current_index
+        start_position = is_return_string2 ? @cursor[-1][-1] : @current_index
         words, indices = @cursor.transpose
-        verbatim_string = str.include?("[") ? words[indices.index(start_position)..-1].join(" ") : words[indices.index(start_position)...-1].join(" ")
+        verbatim_string = (str.include?("[") || is_return_string2) ? words[indices.index(start_position)..-1].join(" ") : words[indices.index(start_position)...-1].join(" ")
       else
         verbatim_string, start_position = @cursor[-1]
       end

@@ -93,14 +93,14 @@ describe "NameSpotter" do
     offsets[0].should == 67
   end
 
-  it "should normalize capitalization of found names" do
+  it "should not normalize capitalization of found names" do
+    #this is a problem we are aware of
     text = "We need to make sure that Ophioihrix nidis and OPHTOMVXIDAE and also  Ophiocynodus and especially ASTÉROCHEMIDAE and definitely STFROPHVTIDAE and may be Asleronyx excavata should all be capitalized correctly"
     res = @neti.find(text)
-    res.should == {:names=>[{:verbatim=>"Ophioihrix nidis", :scientificName=>"Ophioihrix nidis", :offsetStart=>26, :offsetEnd=>41}, {:verbatim=>"OPHTOMVXIDAE", :scientificName=>"Ophtomvxidae", :offsetStart=>47, :offsetEnd=>58}, {:verbatim=>"Ophiocynodus", :scientificName=>"Ophiocynodus", :offsetStart=>70, :offsetEnd=>81}, {:verbatim=>"ASTÉROCHEMIDAE", :scientificName=>"Astérochemidae", :offsetStart=>98, :offsetEnd=>111}, {:verbatim=>"STFROPHVTIDAE", :scientificName=>"Stfrophvtidae", :offsetStart=>128, :offsetEnd=>140}, {:verbatim=>"Asleronyx excavata", :scientificName=>"Asleronyx excavata", :offsetStart=>153, :offsetEnd=>170}]}
+    res.should == {:names=>[{:verbatim=>"Ophioihrix nidis", :scientificName=>"Ophioihrix nidis", :offsetStart=>26, :offsetEnd=>41}, {:verbatim=>"OPHTOMVXIDAE", :scientificName=>"OPHTOMVXIDAE", :offsetStart=>47, :offsetEnd=>58}, {:verbatim=>"Ophiocynodus", :scientificName=>"Ophiocynodus", :offsetStart=>70, :offsetEnd=>81}, {:verbatim=>"ASTÉROCHEMIDAE", :scientificName=>"ASTÉROCHEMIDAE", :offsetStart=>98, :offsetEnd=>111}, {:verbatim=>"STFROPHVTIDAE", :scientificName=>"STFROPHVTIDAE", :offsetStart=>128, :offsetEnd=>140}, {:verbatim=>"Asleronyx excavata", :scientificName=>"Asleronyx excavata", :offsetStart=>153, :offsetEnd=>170}]}
   end
   
   it "should not break NetiNeti results from processing OCR with | character in it" do
-    text = "We need to make sure that Oph|oihrix nidis and OPHTOMVX|DAE will not break results"
     text = "We need to make sure that Oph|oihrix nidis and OPHTOMVX|DAE will not break results"
     res = @neti.find(text)
     res.should == {:names=>[{:verbatim=>"Ophloihrix nidis", :scientificName=>"Ophloihrix nidis", :offsetStart=>26, :offsetEnd=>41}]}
@@ -110,6 +110,19 @@ describe "NameSpotter" do
     text = "If we encounter Plantago major it is ok, but if it is Plantago quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus quercus, something is probably not right. However we take Plantago quercus quercus quercus quercus quercus by some strange reason. Well, the reason is this kind of thing -- Pardosa moesta var. moesta f. moesta or something like that"
     res = @tf.find(text)
     res.should == {:names=>[{:verbatim=>"Plantago major", :scientificName=>"Plantago major", :offsetStart=>16, :offsetEnd=>29}, {:verbatim=>"Plantago quercus quercus quercus quercus quercus", :scientificName=>"Plantago quercus quercus quercus quercus quercus", :offsetStart=>225, :offsetEnd=>272}, {:verbatim=>"Pardosa moesta var. moesta f. moesta", :scientificName=>"Pardosa moesta var. moesta f. moesta", :offsetStart=>340, :offsetEnd=>375}]}
+  end
+  
+  it "should register situations where new name started and prev name is finished in the same cycle in TF" do
+    text = "What  happens another called Pardosa moesta (Araneae: Lycosidae) is the species?"
+    res = @tf.find(text)
+    res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>29, :offsetEnd=>42}, {:verbatim=>"(Araneae:", :scientificName=>"Araneae", :offsetStart=>44, :offsetEnd=>52}, {:verbatim=>"Lycosidae)", :scientificName=>"Lycosidae", :offsetStart=>54, :offsetEnd=>63}]} 
+  end
+
+  it "should ignore abbreviated genus before family for TaxonFinder" do
+    text = "What  happens another called P. (LYCOSIDAE) is the species?"
+    res = @tf.find(text)
+    res[:names].size.should == 1
+    res.should == {:names=>[{:verbatim=>"(LYCOSIDAE)", :scientificName=>"Lycosidae", :offsetStart=>32, :offsetEnd=>42}]}
   end
 
 end
