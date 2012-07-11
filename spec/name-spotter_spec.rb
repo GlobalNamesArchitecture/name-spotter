@@ -82,7 +82,7 @@ describe "NameSpotter" do
   it "should properly handle abbreviated names found by taxonfinder" do
     text = "Pardosa moesta Banks, 1892 is one spider, Schizocosa ocreata Keyserling, 1887 is a second and a third is Schizocosa saltatrix borealis. The abbreviations are P. moesta, S. ocreata, and S. saltatrix borealis is the third."
     tf_res = @tf.find(text)
-    tf_res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>0, :offsetEnd=>13}, {:verbatim=>"Schizocosa ocreata", :scientificName=>"Schizocosa ocreata", :offsetStart=>42, :offsetEnd=>59}, {:verbatim=>"Schizocosa saltatrix borealis.", :scientificName=>"Schizocosa saltatrix borealis", :offsetStart=>105, :offsetEnd=>134}, {:verbatim=>"P. moesta,", :scientificName=>"P[ardosa] moesta", :offsetStart=>158, :offsetEnd=>167}, {:verbatim=>"S. ocreata,", :scientificName=>"S[chizocosa] ocreata", :offsetStart=>169, :offsetEnd=>179}, {:verbatim=>"S. saltatrix borealis is", :scientificName=>"S[chizocosa] saltatrix borealis", :offsetStart=>185, :offsetEnd=>208}]}
+    tf_res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>0, :offsetEnd=>13}, {:verbatim=>"Schizocosa ocreata", :scientificName=>"Schizocosa ocreata", :offsetStart=>42, :offsetEnd=>59}, {:verbatim=>"Schizocosa saltatrix borealis", :scientificName=>"Schizocosa saltatrix borealis", :offsetStart=>105, :offsetEnd=>133}, {:verbatim=>"P. moesta", :scientificName=>"P[ardosa] moesta", :offsetStart=>158, :offsetEnd=>166}, {:verbatim=>"S. ocreata", :scientificName=>"S[chizocosa] ocreata", :offsetStart=>169, :offsetEnd=>178}, {:verbatim=>"S. saltatrix borealis", :scientificName=>"S[chizocosa] saltatrix borealis", :offsetStart=>185, :offsetEnd=>205}]}
   end
 
   it "should not make unsequential offsets on a page when using NetiNeti" do
@@ -111,6 +111,17 @@ describe "NameSpotter" do
     res = @tf.find(text)
     res.should == {:names=>[{:verbatim=>"Plantago major", :scientificName=>"Plantago major", :offsetStart=>16, :offsetEnd=>29}, {:verbatim=>"Plantago quercus quercus quercus quercus quercus", :scientificName=>"Plantago quercus quercus quercus quercus quercus", :offsetStart=>225, :offsetEnd=>272}, {:verbatim=>"Pardosa moesta var. moesta f. moesta", :scientificName=>"Pardosa moesta var. moesta f. moesta", :offsetStart=>340, :offsetEnd=>375}]}
   end
+
+  it "should be able to recognize names like P.moesta by TaxonFinder" do
+    text = "Pardosa moesta! If we encounter Pardosa moesta and then P.modica another name I know is Xenopus laevis and also P.moesta. Again without space TaxonFinder should find both. And Plantago major foreva"
+    res = @tf.find(text)
+    res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>0, :offsetEnd=>13}, {:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>32, :offsetEnd=>45}, {:verbatim=>"P.modica", :scientificName=>"P[ardosa] modica", :offsetStart=>56, :offsetEnd=>63}, {:verbatim=>"Xenopus laevis", :scientificName=>"Xenopus laevis", :offsetStart=>88, :offsetEnd=>101}, {:verbatim=>"P.moesta", :scientificName=>"P[ardosa] moesta", :offsetStart=>112, :offsetEnd=>119}, {:verbatim=>"Plantago major", :scientificName=>"Plantago major", :offsetStart=>176, :offsetEnd=>189}]}
+    res[:names].map do |name|
+      verbatim = name[:verbatim]
+      found_name = text[name[:offsetStart]..name[:offsetEnd]]
+      found_name.should == verbatim
+    end
+ end
   
   it "should register situations where new name started and prev name is finished in the same cycle in TF" do
     text = "What  happens another called Pardosa moesta (Araneae: Lycosidae) is the species?"
