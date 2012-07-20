@@ -62,7 +62,9 @@ describe "NameSpotter" do
   end
 
   it "should get back correct names using offsets in utf-8 based text" do
-    text = "A text with multibyte characters नेति नेति:  Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"
+    # this test depends on netineti tornado server, not on namespotter itself. Go and fix that!
+    # the issue and the fix: https://github.com/mbl-cli/NetiNeti/pull/1
+    text = "\r\r\n>':¥/. \r\nA text with multibyte characters नेति नेति:  Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"
     res = @neti.find(text)[:names]
     res.map do |name|
       verbatim = name[:verbatim]
