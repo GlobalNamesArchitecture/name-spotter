@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "name-spotter"
-  s.version = "0.2.1"
+  s.version = "0.2.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Anthony Goddard", "Chuck Ha", "Dmitry Mozzherin"]
-  s.date = "2012-07-11"
+  s.date = "2012-07-24"
   s.description = "The gem searches for scientific names in texts using socket servers running TaxonFinder (by Patrick Leary) and NetiNeti (by Lakshmi Manohar Akella)"
   s.email = "dmozzherin@gmail.com"
   s.extra_rdoc_files = [
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
     ".document",
     ".rspec",
     ".rvmrc",
+    "CHANGELOG",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE.txt",
@@ -36,8 +37,10 @@ Gem::Specification.new do |s|
     "lib/name-spotter/scientific_name.rb",
     "lib/name-spotter/taxon_finder_client.rb",
     "name-spotter.gemspec",
+    "spec/files/english.txt",
     "spec/files/journalofentomol13pomo_0018.txt",
     "spec/files/journalofentomol13pomo_0063.txt",
+    "spec/files/not_english.txt",
     "spec/name-spotter_spec.rb",
     "spec/scientific_name_spec.rb",
     "spec/spec_helper.rb",
@@ -58,6 +61,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<builder>, [">= 0"])
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<unicode_utils>, [">= 0"])
+      s.add_runtime_dependency(%q<unsupervised-language-detection>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_development_dependency(%q<rspec-expectations>, [">= 0"])
       s.add_development_dependency(%q<cucumber>, [">= 0"])
@@ -72,6 +76,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<builder>, [">= 0"])
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<unicode_utils>, [">= 0"])
+      s.add_dependency(%q<unsupervised-language-detection>, [">= 0"])
       s.add_dependency(%q<rspec>, ["~> 2.3.0"])
       s.add_dependency(%q<rspec-expectations>, [">= 0"])
       s.add_dependency(%q<cucumber>, [">= 0"])
@@ -87,6 +92,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<builder>, [">= 0"])
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<unicode_utils>, [">= 0"])
+    s.add_dependency(%q<unsupervised-language-detection>, [">= 0"])
     s.add_dependency(%q<rspec>, ["~> 2.3.0"])
     s.add_dependency(%q<rspec-expectations>, [">= 0"])
     s.add_dependency(%q<cucumber>, [">= 0"])
