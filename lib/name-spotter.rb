@@ -5,11 +5,29 @@ require "json"
 require "nokogiri"
 require "socket"
 require "unicode_utils"
+require 'unsupervised-language-detection'
 require File.join(File.dirname(__FILE__), 'name-spotter', 'client')
 
 Dir["#{File.dirname(__FILE__)}/name-spotter/**/*.rb"].each {|f| require f}
 
 class NameSpotter
+  
+  def self.english?(text)
+    tweets = text.split(/\s+/).inject([]) do |res, w|
+      if w.match(/[A-Za-z]/)
+        if res.empty? || res[-1].size >=15
+          res << [w]
+        else
+          res[-1] << w
+        end
+      end
+      res
+    end
+    eng, not_eng = tweets.shuffle[0...50].partition {|a| UnsupervisedLanguageDetection.is_english_tweet?(a.join(" "))}
+    percentage = eng.size.to_f/(not_eng.size + eng.size) 
+    puts percentage
+    percentage > 0.5
+  end
 
   def initialize(client)
     @client = client
@@ -22,6 +40,7 @@ class NameSpotter
     return { names: names } unless format
     format == "json" ? to_json(names) : to_xml(names)
   end
+
   
   private
 

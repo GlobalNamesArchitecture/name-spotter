@@ -67,6 +67,7 @@ GEM
       rubyzip
     term-ansicolor (1.0.7)
     unicode_utils (1.3.0)
+    unsupervised-language-detection (0.0.6)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -87,3 +88,4 @@ DEPENDENCIES
   rspec-expectations
   ruby-debug19
   unicode_utils
+  unsupervised-language-detection

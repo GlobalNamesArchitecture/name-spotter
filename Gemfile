@@ -8,6 +8,7 @@ gem "rest-client"
 gem "builder"
 gem "json"
 gem "unicode_utils"
+gem "unsupervised-language-detection"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

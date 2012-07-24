@@ -10,6 +10,21 @@ describe "NameSpotter" do
     @clients = [@neti, @tf]
   end
 
+  it "should find if a text is in english" do 
+    eng = open(File.join(File.dirname(__FILE__), 'files', 'english.txt'), 'r:utf-8').read
+    eng2 = open(File.join(File.dirname(__FILE__), 'files', 'english.txt'), 'r:utf-8').read
+    eng3 = open(File.join(File.dirname(__FILE__), 'files', 'journalofentomol13pomo_0018.txt'), 'r:utf-8').read
+    eng3 = open(File.join(File.dirname(__FILE__), 'files', 'journalofentomol13pomo_0063.txt'), 'r:utf-8').read
+    
+    not_eng = open(File.join(File.dirname(__FILE__), 'files', 'not_english.txt'), 'r:utf-8').read
+    100.times do
+      NameSpotter.english?(eng).should be_true
+      NameSpotter.english?(eng2).should be_true
+      NameSpotter.english?(eng3).should be_false
+      NameSpotter.english?(not_eng).should be_false
+    end
+  end
+
   it "should exist" do
     @neti.is_a?(NameSpotter).should be_true
     @tf.is_a?(NameSpotter).should be_true
