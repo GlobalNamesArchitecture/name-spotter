@@ -25,7 +25,6 @@ class NameSpotter
     end
     eng, not_eng = tweets.shuffle[0...50].partition {|a| UnsupervisedLanguageDetection.is_english_tweet?(a.join(" "))}
     percentage = eng.size.to_f/(not_eng.size + eng.size) 
-    puts percentage
     percentage > 0.5
   end
 
