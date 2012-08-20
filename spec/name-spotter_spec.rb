@@ -152,5 +152,12 @@ describe "NameSpotter" do
     res[:names].size.should == 1
     res.should == {:names=>[{:verbatim=>"(LYCOSIDAE)", :scientificName=>"Lycosidae", :offsetStart=>32, :offsetEnd=>42}]}
   end
+  
+  it "should find names with diacrictics" do
+    text = 'Mactra triangula Renieri. Fissurella nubécula Linnó.'
+    res = @tf.find(text)
+    res[:names].size.should == 2 
+    res.should == {:names=>[{:verbatim=>"Mactra triangula", :scientificName=>"Mactra triangula", :offsetStart=>0, :offsetEnd=>15}, {:verbatim=>"Fissurella nubécula", :scientificName=>"Fissurella nubécula", :offsetStart=>26, :offsetEnd=>44}]} 
+  end
 
 end

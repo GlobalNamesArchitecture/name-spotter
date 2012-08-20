@@ -45,7 +45,11 @@ class NameSpotter
     end
 
     def socket
-      @socket ||= TCPSocket.open @host, @port
+      unless @socket
+        @socket = TCPSocket.open(@host, @port)
+        @socket.set_encoding('utf-8')
+      end
+      @socket
     end
 
     def taxon_find(word)
