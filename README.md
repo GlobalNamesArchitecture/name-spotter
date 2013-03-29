@@ -1,6 +1,11 @@
 name-spotter
 ============
 
+[![Gem Version][1]][2]
+[![Continuous Integration Status][3]][4]
+[![Dependency Status][5]][6]
+
+
 Finds biodiversity scientific names in texts using TaxonFinder 
 (by Patrick Leary) or NetiNeti (by Lakshmi Manohar Akella) libraries. 
 This gem works with ruby >= 1.9.2
@@ -111,3 +116,9 @@ Authors: Chuck Ha, Anthony Goddard, Dmitry Mozzherin
 Copyright (c) 2012-2013 Marine Biological Laboratory. See LICENSE.txt for
 further details.
 
+[1]: https://badge.fury.io/rb/name-spotter.png
+[2]: http://badge.fury.io/rb/name-spotter
+[3]: https://secure.travis-ci.org/GlobalNamesArchitecture/name-spotter.png
+[4]: http://travis-ci.org/GlobalNamesArchitecture/name-spotter
+[5]: https://gemnasium.com/GlobalNamesArchitecture/name-spotter.png
+[6]: https://gemnasium.com/GlobalNamesArchitecture/name-spotter
