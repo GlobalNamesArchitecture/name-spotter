@@ -111,7 +111,7 @@ isolate to its own commit so I can cherry-pick around it.
 Copyright
 ---------
 
-Authors: Chuck Ha, Anthony Goddard, Dmitry Mozzherin
+Authors: [Chuck Ha][7], [Anthony Goddard][8], [Dmitry Mozzherin][9], [David Shorthouse][10]
 
 Copyright (c) 2012-2013 Marine Biological Laboratory. See LICENSE.txt for
 further details.
@@ -122,3 +122,7 @@ further details.
 [4]: http://travis-ci.org/GlobalNamesArchitecture/name-spotter
 [5]: https://gemnasium.com/GlobalNamesArchitecture/name-spotter.png
 [6]: https://gemnasium.com/GlobalNamesArchitecture/name-spotter
+[7]: https://github.com/ChuckHa
+[8]: https://github.com/agoddard
+[9]: https://github.com/dimus
+[10]: https://github.com/dshorthouse
