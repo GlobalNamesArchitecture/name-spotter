@@ -1,12 +1,17 @@
-= name-spotter
+name-spotter
+============
 
-Finds biodiversity scientific names in texts using TaxonFinder (by Patrick Leary) or NetiNeti (by Lakshmi Manohar Akella) libraries. This gem works with ruby >= 1.9.2
+Finds biodiversity scientific names in texts using TaxonFinder 
+(by Patrick Leary) or NetiNeti (by Lakshmi Manohar Akella) libraries. 
+This gem works with ruby >= 1.9.2
 
-== Requirements
+Requirements
+------------
 
 * Python 2.6/2.7 with NLTK module, http://www.nltk.org/
 
-== Installation
+Installation
+------------
 
 * Install the gem
 
@@ -38,7 +43,8 @@ Finds biodiversity scientific names in texts using TaxonFinder (by Patrick Leary
     cp config/neti_http_config.cfg.example config/neti_http_config.cfg
     python neti_tornado_server.py 
 
-== Usage
+Usage
+-----
 
 Fist you have to download TaxonFinder and NetiNeti services.
     
@@ -57,39 +63,51 @@ If you are using localhost and default ports:
     neti_name_spotter.find(your_text)
     tf_name_spotter.find(your_text)
 
-If you have installed NetiNeti and TaxonFinder on a machine with non-default port:
+If you have installed NetiNeti and TaxonFinder on a machine 
+with non-default port:
 
-    neti_client = NameSpotter::NetiNetiClient.new(host: "example.com", port: 5555)
+    neti_client = NameSpotter::NetiNetiClient.new(host: "example.com", 
+                                                  port: 5555)
     #or
-    neti_client = NameSpotter::NetiNetiClient.new(host: "123.123.123.111", port: 5555)
+    neti_client = NameSpotter::NetiNetiClient.new(host: '123.123.123.111', 
+                                                  port: 5555)
 
 If you want to get results in JSON or XML formats
     
     neti_name_spotter.find(your_text, "json")
     neti_name_spotter.find(your_text, "xml")
 
-== Development
+Development
+-----------
 
-To run tests start TaxonFinder and NetiNeti on your local machine with default configurations and run
+To run tests start TaxonFinder and NetiNeti on your local machine with 
+default configurations and run
 
     rake
 
 
 
-== Contributing to name-spotter
+Contributing to name-spotter
+----------------------------
  
-* Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
-* Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
+* Check out the latest master to make sure the feature hasn't been implemented 
+or the bug hasn't been fixed yet
+* Check out the issue tracker to make sure someone already hasn't requested 
+it and/or contributed it
 * Fork the project
 * Start a feature/bugfix branch
 * Commit and push until you are happy with your contribution
-* Make sure to add tests for it. This is important so I don't break it in a future version unintentionally.
-* Please try not to mess with the Rakefile, version, or history. If you want to have your own version, or is otherwise necessary, that is fine, but please isolate to its own commit so I can cherry-pick around it.
+* Make sure to add tests for it. This is important so I don't break it in a 
+future version unintentionally.
+* Please try not to mess with the Rakefile, version, or history. If you want 
+to have your own version, or is otherwise necessary, that is fine, but please 
+isolate to its own commit so I can cherry-pick around it.
 
-== Copyright
+Copyright
+---------
 
-Authors: Chuck Ha, Anthony Goddard,  Dmitry Mozzherin
+Authors: Chuck Ha, Anthony Goddard, Dmitry Mozzherin
 
-Copyright (c) 2012 Marine Biological Laboratory. See LICENSE.txt for
+Copyright (c) 2012-2013 Marine Biological Laboratory. See LICENSE.txt for
 further details.
 
