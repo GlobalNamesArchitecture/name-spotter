@@ -44,14 +44,15 @@ Install and run NetiNeti in a new terminal window
     
     sudo easy_install virtualenv
     sudo easy_install tornado
-    python neti_env.py virtualenvs/neti
+    python neti_env.py virtualenv
+    source virtualenv/bin/activate
     cp config/neti_http_config.cfg.example config/neti_http_config.cfg
     python neti_tornado_server.py 
 
 Usage
 -----
 
-Fist you have to download TaxonFinder and NetiNeti services.
+First you have to download TaxonFinder and NetiNeti services.
     
 * TaxonFinder: http://code.google.com/p/taxon-finder/
 * NetiNeti: https://github.com/mbl-cli/NetiNeti
@@ -111,7 +112,8 @@ isolate to its own commit so I can cherry-pick around it.
 Copyright
 ---------
 
-Authors: [Chuck Ha][7], [Anthony Goddard][8], [Dmitry Mozzherin][9], [David Shorthouse][10]
+Authors: [Chuck Ha][7], [Anthony Goddard][8], [Dmitry Mozzherin][9], 
+[David Shorthouse][10]
 
 Copyright (c) 2012-2013 Marine Biological Laboratory. See LICENSE.txt for
 further details.
