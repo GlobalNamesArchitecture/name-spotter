@@ -13,18 +13,18 @@ Requirements
 Installation
 ------------
 
-* Install the gem
+Install the gem
 
     gem install name-spotter
 
-* Install and run TaxonFinder in a new terminal window
+Install and run TaxonFinder in a new terminal window
 
     wget http://taxon-finder.googlecode.com/files/taxon-finder.tar.gz
     tar zxvf taxon-finder.tar.gz
     cd taxon-finder
     perl server.pl 
 
-* Install and run NetiNeti in a new terminal window
+Install and run NetiNeti in a new terminal window
 
     wget https://github.com/mbl-cli/NetiNeti/zipball/master
     unzip master
