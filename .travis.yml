@@ -1,16 +1,19 @@
 rvm:
   - 1.9.3
+bundler_args: --without development
 before_install:
   - sudo apt-get install wget git
-  - sudo gem install spawn
   - sudo easy_install virtualenv
   - sudo easy_install tornado
   - sudo easy_install nltk
   - sudo easy_install nose
-  - ./scripts/set_test_env
-  - nohup python ./src/neti_neti/neti_tornado_server.py
-  - nohup perl ./src/taxon-finder/server.pl
-bundler_args: --without development
+before_script:
+  - ./scripts/set_travis_env
+  - cd src/taxon-finder
+  - perl server.pl &
+  - cd ../..
+  - python ./src/neti_neti/neti_tornado_server.py &
+  - sleep 100
 branches:
   only:
       - master
