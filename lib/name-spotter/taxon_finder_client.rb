@@ -1,7 +1,7 @@
 # encoding: utf-8
 class NameSpotter
   class TaxonFinderClient < NameSpotter::Client
-    def initialize(opts = { host: "0.0.0.0", port: "1234" })
+    def initialize(opts = { host: '0.0.0.0', port: '1234' })
       super
     end
 
@@ -38,7 +38,9 @@ class NameSpotter
     private
 
     def process_word(word, word_separator_size)
-      cursor_entry = [word, @cursor[-1][0].size + @cursor[-1][1] + @cursor[-1][2], word_separator_size]
+      cursor_entry = [word, 
+                      @cursor[-1][0].size + @cursor[-1][1] + @cursor[-1][2], 
+                      word_separator_size]
       @cursor.shift
       @cursor << cursor_entry
       taxon_find(word)
@@ -53,24 +55,31 @@ class NameSpotter
     end
 
     def taxon_find(word)
-      input = "#{word}|#{@current_string}|#{@current_string_state}|#{@word_list_matches}|0"
+      input = 
+   "#{word}|#{@current_string}|#{@current_string_state}|#{@word_list_matches}|0"
         socket.write(input + "\n")
       if output = socket.gets
         response = parse_socket_response(output)
         return if not response
         
-        [response.return_string, response.return_string_2].each_with_index do |str, i|
+        [response.return_string, 
+         response.return_string_2].each_with_index do |str, i|
           next if !str || str.split(" ").size > 6
-          verbatim_string, scientific_string, start_position = process_response(str, i)
+          verbatim_string, scientific_string, start_position = 
+            process_response(str, i)
           next if scientific_string.empty?
-          add_name NameSpotter::ScientificName.new(verbatim_string, :start_position => start_position, :scientific_name => scientific_string)
+          add_name NameSpotter::ScientificName.new(verbatim_string, 
+                                    start_position: start_position, 
+                                    scientific_name: scientific_string)
         end
         @current_index = @current_string.empty? ? nil : @cursor[-1][1]
       end
     end
 
     def parse_socket_response(response)
-      current_string, current_string_state, word_list_matches, return_string, return_score, return_string_2, return_score_2 = response.strip.split '|'
+      current_string, current_string_state, word_list_matches, 
+        return_string, return_score, return_string_2, 
+        return_score_2 = response.strip.split '|'
       @current_string = current_string
       @current_string_state = current_string_state
       @word_list_matches = word_list_matches
@@ -79,13 +88,13 @@ class NameSpotter
           @current_index = @cursor[-1][1]
       end
       if not return_string.blank? or not return_string_2.blank? 
-        OpenStruct.new( { :current_string       => current_string,
-                       :current_string_state => current_string_state,
-                       :word_list_matches    => word_list_matches,
-                       :return_string        => return_string,
-                       :return_score         => return_score,
-                       :return_string_2      => return_string_2,
-                       :return_score_2       => return_score_2 })
+        OpenStruct.new( { current_string:    current_string,
+                       current_string_state: current_string_state,
+                       word_list_matches:    word_list_matches,
+                       return_string:        return_string,
+                       return_score:         return_score,
+                       return_string_2:      return_string_2,
+                       return_score_2:       return_score_2 })
       else
         @current_index = nil if @current_string.empty? && @current_index
         false
@@ -102,7 +111,9 @@ class NameSpotter
         verbatim_components = @cursor[indices.rindex(start_position)..-1]
         sci_name_items_num = str.split(" ").size
         verbatim_components = verbatim_components[0...sci_name_items_num]
-        verbatim_string = verbatim_components.map {|w| w[0] + (" " * w[2])}.join("").gsub(/[\.\,\!\;]*\s*$/, '')
+        verbatim_string = verbatim_components.map do |w| 
+          w[0] + (" " * w[2])
+        end.join("").gsub(/[\.\,\!\;]*\s*$/, '')
       else
         verbatim_string, start_position, space_size = @cursor[-1]
       end
