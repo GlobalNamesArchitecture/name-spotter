@@ -1,7 +1,72 @@
-# encoding: utf-8
-require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-
 describe "NameSpotter" do
+  subject { NameSpotter }
+  let(:neti) { subject.new(subject::NetiNetiClient.new()) }
+  let(:tf) { subject.new(subject::TaxonFinderClient.new()) }
+  let(:clients) { [neti, tf] }
+
+  describe ".english?" do
+    let(:eng) { read("english.txt") }
+    let(:eng2) { read("journalofentomol13pomo_0018.txt") }
+    let(:eng3) { read("journalofentomol13pomo_0063.txt") }
+
+    it "detects english" do
+      100.times do
+        expect(subject.english? eng).to be true
+        expect(subject.english? eng2).to be true
+        expect(subject.english? eng3).to be false
+      end
+    end
+  end
+
+  describe ".new" do
+    it "works" do
+      expect(neti).to be_kind_of NameSpotter
+      expect(tf).to be_kind_of NameSpotter
+    end
+  end
+
+  describe "#find" do
+    context "empty text" do
+      it "returns empty list" do
+        clients.each do |c|
+          expect(c.find(nil)).to eq({ names: [] })
+          expect(c.find(nil, 'json')).to eq "{\"names\":[]}"
+          expect(c.find(nil, "xml"))
+                 .to eq "<?xml version=\"1.0\"?>\n<names/>\n"
+          expect(c.find('', 'json')).to eq "{\"names\":[]}"
+          expect(c.find('', "xml"))
+                 .to eq "<?xml version=\"1.0\"?>\n<names/>\n"
+        end
+      end
+    end
+
+    context "text without sci names" do
+      let(:text) { "one two three, no scientific names" }
+
+      it "returns empty list" do
+        clients.each do |c|
+          expect(c.find(text)).to eq({ names: [] })
+        end
+      end
+    end
+
+    context "text with one sci name" do
+      let(:text) { "Pardosa moesta" }
+
+      it "returns empty list" do
+        clients.each do |c|
+          expect(c.find(text)[:names].size).to eq 1
+        end
+      end
+    end
+
+  end
+
+  def read(file)
+    File.read(File.join(__dir__, "files", file))
+  end
+end
+__END__
   before(:all) do
     neti_neti = NameSpotter::NetiNetiClient.new()
     taxon_finder = NameSpotter::TaxonFinderClient.new()
@@ -10,24 +75,9 @@ describe "NameSpotter" do
     @clients = [@neti, @tf]
   end
 
-  it "should find if a text is in english" do 
-    eng = open(File.join(File.dirname(__FILE__), 'files', 'english.txt'), 'r:utf-8').read
-    eng2 = open(File.join(File.dirname(__FILE__), 'files', 'english.txt'), 'r:utf-8').read
-    eng3 = open(File.join(File.dirname(__FILE__), 'files', 'journalofentomol13pomo_0018.txt'), 'r:utf-8').read
-    eng3 = open(File.join(File.dirname(__FILE__), 'files', 'journalofentomol13pomo_0063.txt'), 'r:utf-8').read
-    
-    not_eng = open(File.join(File.dirname(__FILE__), 'files', 'not_english.txt'), 'r:utf-8').read
-    100.times do
-      NameSpotter.english?(eng).should be_true
-      NameSpotter.english?(eng2).should be_true
-      NameSpotter.english?(eng3).should be_false
-      NameSpotter.english?(not_eng).should be_false
-    end
-  end
-
   it "should exist" do
-    @neti.is_a?(NameSpotter).should be_true
-    @tf.is_a?(NameSpotter).should be_true
+    expect(@neti).to be_kind_of NameSpotter
+    expect(@tf).to be_kind_of NameSpotter
   end
 
   it "should use ruby as default format" do
@@ -44,7 +94,7 @@ describe "NameSpotter" do
       c.find('', "xml").should == "<?xml version=\"1.0\"?>\n<names/>\n"
     end
   end
-  
+
   it "should return empty result if no names are found" do
     text = "one two three, no scientific names"
     @clients.each do |c|
@@ -55,24 +105,24 @@ describe "NameSpotter" do
 
   it "should be able to find scientific names in text" do
     text = "Some text   that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus and unicoded name Aranea röselii. Also it has name unknown before: Varanus bitatawa species"
-    res = @neti.find(text)[:names].map { |n| n[:scientificName] } 
+    res = @neti.find(text)[:names].map { |n| n[:scientificName] }
     res.should == ["Betula alba", "Mus musculus", "B. alba", "Aranea röselii", "Varanus bitatawa"]
     tf_res = @tf.find(text)
-    res = tf_res[:names].map { |n| n[:scientificName] } 
+    res = tf_res[:names].map { |n| n[:scientificName] }
     res.should == ["Betula alba", "Mus musculus", "B[etula] alba", "Aranea röselii", "Varanus"]
   end
 
-  
+
   it "should not remember previous search results" do
     text = "Some text that has Betula\n alba and Mus musculus and \neven B. alba and even M. mus-\nculus. Also it has name unknown before: Varanus bitatawa species"
-    res = @neti.find(text)[:names].map { |n| n[:scientificName] } 
+    res = @neti.find(text)[:names].map { |n| n[:scientificName] }
     res.should == ["Betula alba", "Mus musculus", "B. alba", "Varanus bitatawa"]
-    res = @tf.find(text)[:names].map { |n| n[:scientificName] } 
+    res = @tf.find(text)[:names].map { |n| n[:scientificName] }
     res.should == ["Betula alba", "Mus musculus", "B[etula] alba", "Varanus"]
     text = "Some another text that has Xysticus \ncanadensis and Pardosa moesta and \neven X. canadensis and even P. mo-\nesta."
-    res = @neti.find(text)[:names].map { |n| n[:scientificName] } 
+    res = @neti.find(text)[:names].map { |n| n[:scientificName] }
     res.should == ['Xysticus canadensis', 'Pardosa moesta', 'X. canadensis']
-    res = @tf.find(text)[:names].map { |n| n[:scientificName] } 
+    res = @tf.find(text)[:names].map { |n| n[:scientificName] }
     res.should == ['Xysticus canadensis', 'Pardosa moesta', 'X[ysticus] canadensis']
   end
 
@@ -93,9 +143,9 @@ describe "NameSpotter" do
     res = @neti.find(text)
     res.should == {:names=>[{:verbatim=>"Betula\n alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora ×rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"Pardosa\n moesta", :scientificName=>"Pardosa moesta", :offsetStart=>198, :offsetEnd=>212}]}
     tf_res = @tf.find(text)
-    tf_res.should == {:names=>[{:verbatim=>"Betula  alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Passeriformes.", :scientificName=>"Passeriformes", :offsetStart=>83, :offsetEnd=>96}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>179, :offsetEnd=>184}, {:verbatim=>"Pardosa  moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>198, :offsetEnd=>222}]} 
+    tf_res.should == {:names=>[{:verbatim=>"Betula  alba", :scientificName=>"Betula alba", :offsetStart=>24, :offsetEnd=>35}, {:verbatim=>"PSEUDOSCORPIONIDA", :scientificName=>"Pseudoscorpionida", :offsetStart=>41, :offsetEnd=>57}, {:verbatim=>"Passeriformes.", :scientificName=>"Passeriformes", :offsetStart=>83, :offsetEnd=>96}, {:verbatim=>"Passiflora ×rosea", :scientificName=>"Passiflora rosea", :offsetStart=>126, :offsetEnd=>142}, {:verbatim=>"Aranea röselii", :scientificName=>"Aranea röselii", :offsetStart=>148, :offsetEnd=>161}, {:verbatim=>"ARANEA", :scientificName=>"Aranea", :offsetStart=>179, :offsetEnd=>184}, {:verbatim=>"Pardosa  moesta f. moesta", :scientificName=>"Pardosa moesta f. moesta", :offsetStart=>198, :offsetEnd=>222}]}
   end
-  
+
   it "should properly handle abbreviated names found by taxonfinder" do
     text = "Pardosa moesta Banks, 1892 is one spider, Schizocosa ocreata Keyserling, 1887 is a second and a third is Schizocosa saltatrix borealis. The abbreviations are P. moesta, S. ocreata, and S. saltatrix borealis is the third."
     tf_res = @tf.find(text)
@@ -116,7 +166,7 @@ describe "NameSpotter" do
     res = @neti.find(text)
     res.should == {:names=>[{:verbatim=>"Ophioihrix nidis", :scientificName=>"Ophioihrix nidis", :offsetStart=>26, :offsetEnd=>41}, {:verbatim=>"OPHTOMVXIDAE", :scientificName=>"OPHTOMVXIDAE", :offsetStart=>47, :offsetEnd=>58}, {:verbatim=>"Ophiocynodus", :scientificName=>"Ophiocynodus", :offsetStart=>70, :offsetEnd=>81}, {:verbatim=>"ASTÉROCHEMIDAE", :scientificName=>"ASTÉROCHEMIDAE", :offsetStart=>98, :offsetEnd=>111}, {:verbatim=>"STFROPHVTIDAE", :scientificName=>"STFROPHVTIDAE", :offsetStart=>128, :offsetEnd=>140}, {:verbatim=>"Asleronyx excavata", :scientificName=>"Asleronyx excavata", :offsetStart=>153, :offsetEnd=>170}]}
   end
-  
+
   it "should not break NetiNeti results from processing OCR with | character in it" do
     text = "We need to make sure that Oph|oihrix nidis and OPHTOMVX|DAE will not break results"
     res = @neti.find(text)
@@ -139,11 +189,11 @@ describe "NameSpotter" do
       found_name.should == verbatim
     end
  end
-  
+
   it "should register situations where new name started and prev name is finished in the same cycle in TF" do
     text = "What  happens another called Pardosa moesta (Araneae: Lycosidae) is the species?"
     res = @tf.find(text)
-    res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>29, :offsetEnd=>42}, {:verbatim=>"(Araneae:", :scientificName=>"Araneae", :offsetStart=>44, :offsetEnd=>52}, {:verbatim=>"Lycosidae)", :scientificName=>"Lycosidae", :offsetStart=>54, :offsetEnd=>63}]} 
+    res.should == {:names=>[{:verbatim=>"Pardosa moesta", :scientificName=>"Pardosa moesta", :offsetStart=>29, :offsetEnd=>42}, {:verbatim=>"(Araneae:", :scientificName=>"Araneae", :offsetStart=>44, :offsetEnd=>52}, {:verbatim=>"Lycosidae)", :scientificName=>"Lycosidae", :offsetStart=>54, :offsetEnd=>63}]}
   end
 
   it "should ignore abbreviated genus before family for TaxonFinder" do
@@ -152,12 +202,12 @@ describe "NameSpotter" do
     res[:names].size.should == 1
     res.should == {:names=>[{:verbatim=>"(LYCOSIDAE)", :scientificName=>"Lycosidae", :offsetStart=>32, :offsetEnd=>42}]}
   end
-  
+
   it "should find names with diacrictics" do
     text = 'Mactra triangula Renieri. Fissurella nubécula Linnó.'
     res = @tf.find(text)
-    res[:names].size.should == 2 
-    res.should == {:names=>[{:verbatim=>"Mactra triangula", :scientificName=>"Mactra triangula", :offsetStart=>0, :offsetEnd=>15}, {:verbatim=>"Fissurella nubécula", :scientificName=>"Fissurella nubécula", :offsetStart=>26, :offsetEnd=>44}]} 
+    res[:names].size.should == 2
+    res.should == {:names=>[{:verbatim=>"Mactra triangula", :scientificName=>"Mactra triangula", :offsetStart=>0, :offsetEnd=>15}, {:verbatim=>"Fissurella nubécula", :scientificName=>"Fissurella nubécula", :offsetStart=>26, :offsetEnd=>44}]}
   end
 
 end

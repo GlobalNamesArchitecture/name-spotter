@@ -7,9 +7,9 @@ class NameSpotter
 
     def find(str, from_web_form=false)
       @names = []
-      @document_verbatim = str
       return [] if str.nil? || str.empty?
-
+      str << " ." # hack to find last name
+      @document_verbatim = str
       # These are for the data-send-back that happens in TaxonFinder
       @current_string = ''
       @current_string_state = ''
@@ -34,12 +34,12 @@ class NameSpotter
       @socket = nil
       @names
     end
-    
+
     private
 
     def process_word(word, word_separator_size)
-      cursor_entry = [word, 
-                      @cursor[-1][0].size + @cursor[-1][1] + @cursor[-1][2], 
+      cursor_entry = [word,
+                      @cursor[-1][0].size + @cursor[-1][1] + @cursor[-1][2],
                       word_separator_size]
       @cursor.shift
       @cursor << cursor_entry
@@ -55,21 +55,21 @@ class NameSpotter
     end
 
     def taxon_find(word)
-      input = 
+      input =
    "#{word}|#{@current_string}|#{@current_string_state}|#{@word_list_matches}|0"
         socket.write(input + "\n")
       if output = socket.gets
         response = parse_socket_response(output)
         return if not response
-        
-        [response.return_string, 
+
+        [response.return_string,
          response.return_string_2].each_with_index do |str, i|
           next if !str || str.split(" ").size > 6
-          verbatim_string, scientific_string, start_position = 
+          verbatim_string, scientific_string, start_position =
             process_response(str, i)
           next if scientific_string.empty?
-          add_name NameSpotter::ScientificName.new(verbatim_string, 
-                                    start_position: start_position, 
+          add_name NameSpotter::ScientificName.new(verbatim_string,
+                                    start_position: start_position,
                                     scientific_name: scientific_string)
         end
         @current_index = @current_string.empty? ? nil : @cursor[-1][1]
@@ -77,8 +77,8 @@ class NameSpotter
     end
 
     def parse_socket_response(response)
-      current_string, current_string_state, word_list_matches, 
-        return_string, return_score, return_string_2, 
+      current_string, current_string_state, word_list_matches,
+        return_string, return_score, return_string_2,
         return_score_2 = response.strip.split '|'
       @current_string = current_string
       @current_string_state = current_string_state
@@ -87,7 +87,7 @@ class NameSpotter
       if !@current_index && @current_string.size > 0
           @current_index = @cursor[-1][1]
       end
-      if not return_string.blank? or not return_string_2.blank? 
+      if not return_string.blank? or not return_string_2.blank?
         OpenStruct.new( { current_string:    current_string,
                        current_string_state: current_string_state,
                        word_list_matches:    word_list_matches,
@@ -111,7 +111,7 @@ class NameSpotter
         verbatim_components = @cursor[indices.rindex(start_position)..-1]
         sci_name_items_num = str.split(" ").size
         verbatim_components = verbatim_components[0...sci_name_items_num]
-        verbatim_string = verbatim_components.map do |w| 
+        verbatim_string = verbatim_components.map do |w|
           w[0] + (" " * w[2])
         end.join("").gsub(/[\.\,\!\;]*\s*$/, '')
       else

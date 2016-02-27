@@ -23,10 +23,11 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "json", "~> 1.4"
   gem.add_runtime_dependency "unicode_utils", "~> 1.3"
   gem.add_runtime_dependency "unsupervised-language-detection", "~> 0.0.6"
-  gem.add_development_dependency "rspec", "~> 2.11"
-  gem.add_development_dependency "rspec-expectations", "~> 2.11"
+  gem.add_development_dependency "rspec", "~> 3.1"
+  gem.add_development_dependency "rspec-expectations", "~> 3.1"
   gem.add_development_dependency "cucumber", "~> 1.2"
   gem.add_development_dependency "capybara", "~> 1.1"
   gem.add_development_dependency "bundler", "~> 1.0"
+  gem.add_development_dependency "byebug", "~> 8.2"
 end
 
