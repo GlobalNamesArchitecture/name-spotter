@@ -13,7 +13,7 @@ This gem works with ruby >= 1.9.2
 Requirements
 ------------
 
-* Python 2.6/2.7 with NLTK module, http://www.nltk.org/
+* Docker
 
 Installation
 ------------
@@ -22,66 +22,57 @@ Install the gem
 
     gem install name-spotter
 
-Install and run TaxonFinder in a new terminal window
+Install and run TaxonFinder and NetiNeti docker containers
 
-    wget http://taxon-finder.googlecode.com/files/taxon-finder.tar.gz
-    tar zxvf taxon-finder.tar.gz
-    cd taxon-finder
-    perl server.pl
-
-Install and run NetiNeti in a new terminal window
-
-    wget https://github.com/mbl-cli/NetiNeti/zipball/master
-    unzip master
-    cd cd mbl-cli-NetiNeti-*
-
-    #or
-
-    git clone git://github.com/mbl-cli/NetiNeti.git
-    cd NetiNeti
-
-    #then
-
-    sudo easy_install virtualenv
-    sudo easy_install tornado
-    python neti_env.py virtualenv
-    source virtualenv/bin/activate
-    cp config/neti_http_config.cfg.example config/neti_http_config.cfg
-    python neti_tornado_server.py
+```bash
+docker pull gnames/netineti
+docker pull gnames/taxonfinder
+docker run -d -p 0.0.0.0:1234:1234 --name tf gnames/taxonfinder
+docker run -d -p 0.0.0.0:6384:6384 --name nn gnames/netineti
+```
 
 Usage
 -----
 
-First you have to download TaxonFinder and NetiNeti services.
+If you are using localhost and default ports for NetiNeti and TaxonFinder:
 
-* TaxonFinder: http://code.google.com/p/taxon-finder/
-* NetiNeti: https://github.com/mbl-cli/NetiNeti
+```ruby
+require "name-spotter"
 
-If you are using localhost and default ports:
+neti_client       = NameSpotter::NetiNetiClient.new()
+tf_client         = NameSpotter::TaxonFinderClient.new()
+neti_name_spotter = NameSpotter.new(neti_client)
+tf_name_spotter   = NameSpotter.new(tf_client)
 
-    require 'name-spotter'
+neti_name_spotter.find(your_text)
+tf_name_spotter.find(your_text)
 
-    neti_client       = NameSpotter::NetiNetiClient.new()
-    tf_client         = NameSpotter::TaxonFinderClient.new()
-    neti_name_spotter = NameSpotter.new(neti_client)
-    tf_name_spotter   = NameSpotter.new(tf_client)
+# in xml format
+neti_name_spotter.find(your_text, "xml")
+tf_name_spotter.find(your_text, "xml")
 
-    neti_name_spotter.find(your_text)
-    tf_name_spotter.find(your_text)
+# in json format
+neti_name_spotter.find(your_text, "json")
+tf_name_spotter.find(your_text, "json")
+```
 
 If you have installed NetiNeti and TaxonFinder on a machine
 with non-default port:
 
-    neti_client = NameSpotter::NetiNetiClient.new(host: "example.com",
-                                                  port: 5555)
-    #or
-    neti_client = NameSpotter::NetiNetiClient.new(host: '123.123.123.111',
-                                                  port: 5555)
+```ruby
+neti_client = NameSpotter::NetiNetiClient.new(host: "example.com",
+                                              port: 5555)
+#or
+neti_client = NameSpotter::NetiNetiClient.new(host: "123.123.123.111",
+                                              port: 5555)
+```
 
 If you want to get results in JSON or XML formats
 
-    neti_name_spotter.find(your_text, "json")
-    neti_name_spotter.find(your_text, "xml")
+```ruby
+neti_name_spotter.find(your_text, "json")
+neti_name_spotter.find(your_text, "xml")
+```
 
 Development
 -----------
@@ -89,7 +80,9 @@ Development
 To run tests start TaxonFinder and NetiNeti on your local machine with
 default configurations and run
 
-    rake
+```
+bundle exec rake
+```
 
 
 
@@ -115,7 +108,7 @@ Copyright
 Authors: [Chuck Ha][7], [Anthony Goddard][8], [Dmitry Mozzherin][9],
 [David Shorthouse][10]
 
-Copyright (c) 2012-2013 Marine Biological Laboratory. See LICENSE.txt for
+Copyright (c) 2012-2016 Marine Biological Laboratory. See LICENSE.txt for
 further details.
 
 [1]: https://badge.fury.io/rb/name-spotter.png
