@@ -121,4 +121,4 @@ further details.
 [8]: https://github.com/agoddard
 [9]: https://github.com/dimus
 [10]: https://github.com/dshorthouse
-[11]: https://github.com/GlobalNamesArchitecture/name-spotter/LICENSE.txt
+[11]: https://raw.githubusercontent.com/GlobalNamesArchitecture/name-spotter/master/LICENSE.txt
