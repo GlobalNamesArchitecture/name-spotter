@@ -46,14 +46,6 @@ tf_name_spotter   = NameSpotter.new(tf_client)
 
 neti_name_spotter.find(your_text)
 tf_name_spotter.find(your_text)
-
-# in xml format
-neti_name_spotter.find(your_text, "xml")
-tf_name_spotter.find(your_text, "xml")
-
-# in json format
-neti_name_spotter.find(your_text, "json")
-tf_name_spotter.find(your_text, "json")
 ```
 
 If you have installed NetiNeti and TaxonFinder on a machine
