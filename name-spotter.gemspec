@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency "unicode_utils", "~> 1.4"
   gem.add_runtime_dependency "unsupervised-language-detection", "~> 0.0.6"
   gem.add_development_dependency "rspec", "~> 3.1"
-  gem.add_development_dependency "bundler", "~> 1.11"
+  gem.add_development_dependency "bundler", "~> 1.10"
   gem.add_development_dependency "byebug", "~> 8.2"
 end
 
