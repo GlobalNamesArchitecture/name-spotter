@@ -23,11 +23,11 @@ for Genus + species
   if genus found and species, but not end of the sentence
     $currentString $cleanCandidateWord|species|$wordListMatches"."$score||-1||
     search continues... found species, can be subspecies
-  
+
   for abbreviated Genera (1-2 letters (where '-' can also be the first letter ???):
     expand Genus if last used genus is known with this letters
     if abbrev did not make sense (genus is not found):
-      ||0||-1|| 
+      ||0||-1||
       - result is nothing
       Also means 2 letter genera are not found by NameFinder
 
@@ -43,7 +43,7 @@ for Genus + species
         "$currentString ($cleanCandidateWord)|genus|$wordListMatches"."$scoreG||-1||\n"
     if next word is genus
       ****"$cleanCandidateWord|genus|$scoreG|$currentString|$wordListMatches||\n"
-  
+
   if next word is family
     if genus was abbreviated make it ""
       ****"||0|$currentString|$wordListMatches"; empty string genus -- should be ignored
