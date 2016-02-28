@@ -1,4 +1,8 @@
 class NameSpotter
-  VERSION = "0.2.5"
+  VERSION = "0.3.0"
+
+  def self.version
+    VERSION
+  end
 end
 

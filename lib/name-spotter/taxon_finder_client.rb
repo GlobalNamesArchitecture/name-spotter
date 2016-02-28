@@ -1,7 +1,7 @@
 # encoding: utf-8
 class NameSpotter
   class TaxonFinderClient < NameSpotter::Client
-    def initialize(opts = { host: '0.0.0.0', port: '1234' })
+    def initialize(opts = { host: "0.0.0.0", port: "1234" })
       super
     end
 
@@ -11,10 +11,10 @@ class NameSpotter
       str << " ." # hack to find last name
       @document_verbatim = str
       # These are for the data-send-back that happens in TaxonFinder
-      @current_string = ''
-      @current_string_state = ''
+      @current_string = ""
+      @current_string_state = ""
       @word_list_matches = 0
-      @cursor = 8.times.inject([]) { |res| res << ['',0, 0] }
+      @cursor = 8.times.inject([]) { |res| res << ["",0, 0] }
       @current_index = nil
       words = str.split(/\s/)
       words.each do |word|
@@ -49,7 +49,7 @@ class NameSpotter
     def socket
       unless @socket
         @socket = TCPSocket.open(@host, @port)
-        @socket.set_encoding('utf-8')
+        @socket.set_encoding("utf-8")
       end
       @socket
     end
@@ -79,7 +79,7 @@ class NameSpotter
     def parse_socket_response(response)
       current_string, current_string_state, word_list_matches,
         return_string, return_score, return_string_2,
-        return_score_2 = response.strip.split '|'
+        return_score_2 = response.strip.split "|"
       @current_string = current_string
       @current_string_state = current_string_state
       @word_list_matches = word_list_matches
@@ -103,7 +103,7 @@ class NameSpotter
 
     def process_response(str, index)
       is_return_string2 = (index == 1)
-      str.force_encoding('utf-8')
+      str.force_encoding("utf-8")
       start_position = verbatim_string = nil
       if @current_index
         start_position = is_return_string2 ? @cursor[-1][1] : @current_index
@@ -113,7 +113,7 @@ class NameSpotter
         verbatim_components = verbatim_components[0...sci_name_items_num]
         verbatim_string = verbatim_components.map do |w|
           w[0] + (" " * w[2])
-        end.join("").gsub(/[\.\,\!\;]*\s*$/, '')
+        end.join("").gsub(/[\.\,\!\;]*\s*$/, "")
       else
         verbatim_string, start_position, space_size = @cursor[-1]
       end

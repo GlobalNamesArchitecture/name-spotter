@@ -3,7 +3,7 @@ class NameSpotter
     attr_reader :verbatim, :scientific, :start_pos, :end_pos, :score
 
     def self.normalize(name)
-      name = name.gsub(",", " ") 
+      name = name.gsub(",", " ")
       name = name.gsub(/\s+/, " ")
     end
 
@@ -22,8 +22,8 @@ class NameSpotter
       other_name.is_a?(Name) &&
         other_name.verbatim.eql?(verbatim) &&
         other_name.scientific.eql?(scientific) &&
-        other_name.start_pos.eql?(start_pos) && 
-        other_name.end_pos.eql?(end_pos) && 
+        other_name.start_pos.eql?(start_pos) &&
+        other_name.end_pos.eql?(end_pos) &&
         other_name.score.eql?(score)
     end
 

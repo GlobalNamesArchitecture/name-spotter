@@ -4,6 +4,12 @@ describe "NameSpotter" do
   let(:tf) { subject.new(subject::TaxonFinderClient.new()) }
   let(:clients) { [neti, tf] }
 
+  describe ".version" do
+    it "returns version" do
+      expect(subject.version).to match /\d+\.\d+\.\d+/
+    end
+  end
+
   describe ".english?" do
     let(:eng) { read("english.txt") }
     let(:eng2) { read("journalofentomol13pomo_0018.txt") }
