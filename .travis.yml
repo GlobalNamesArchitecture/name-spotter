@@ -8,15 +8,15 @@ rvm:
   - 2.1
   - 2.2
 
-bundler_args: --without development
+# bundler_args: --without development
 
 before_install:
   - docker pull gnames/netineti
   - docker pull gnames/taxonfinder
   - docker run -d -p 0.0.0.0:1234:1234 --name tf gnames/taxonfinder
   - docker run -d -p 0.0.0.0:6384:6384 --name nn gnames/netineti
-before_script:
-  - sleep 100
+# before_script:
+#   - sleep 100
 branches:
   only:
       - master
