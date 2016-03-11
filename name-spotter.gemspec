@@ -17,14 +17,14 @@ Gem::Specification.new do |gem|
 
   gem.files = `git ls-files`.split("\n")
   gem.require_paths = ["lib"]
-  gem.add_runtime_dependency "rake", "~> 10.5"
   gem.add_runtime_dependency "rest-client", "~> 1.8"
   gem.add_runtime_dependency "nokogiri", "~> 1.6"
   gem.add_runtime_dependency "builder", "~> 3.1"
   gem.add_runtime_dependency "json", "~> 1.8"
   gem.add_runtime_dependency "unicode_utils", "~> 1.4"
   gem.add_runtime_dependency "unsupervised-language-detection", "~> 0.0.6"
-  gem.add_development_dependency "rspec", "~> 3.1"
+  gem.add_development_dependency "rake", "~> 11.1"
+  gem.add_development_dependency "rspec", "~> 3.4"
   gem.add_development_dependency "bundler", "~> 1.10"
   gem.add_development_dependency "byebug", "~> 8.2"
 end
