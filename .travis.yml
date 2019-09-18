@@ -1,12 +1,10 @@
 sudo: required
 language: ruby
-services: 
+services:
   - docker
 
 rvm:
-  - 2.0
-  - 2.1
-  - 2.2
+  - 2.6
 
 # bundler_args: --without development
 
